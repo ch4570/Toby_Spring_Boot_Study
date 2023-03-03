@@ -6,8 +6,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Objects;
-
 // @RestController = @Controller + @ResponseBody
 @RestController
 public class HelloController implements ApplicationContextAware {
@@ -18,10 +16,8 @@ public class HelloController implements ApplicationContextAware {
     // 이미 객체가 생성되고 Life-Cycle 메서드가 실행되기 때문이다.
     private ApplicationContext applicationContext;
 
-    public HelloController(HelloService helloService, ApplicationContext applicationContext) {
+    public HelloController(HelloService helloService) {
         this.helloService = helloService;
-        this.applicationContext = applicationContext;
-        System.out.println(applicationContext);
     }
 
     /*
@@ -32,13 +28,16 @@ public class HelloController implements ApplicationContextAware {
     @GetMapping("/hello")
     public String hello(String name) {
 
+        if(name == null || name.trim().length() == 0) throw new IllegalStateException();
+
         // Objects.requireNonNull 메서드는 들어온 Object가 null 이면 예외를 발생시킨다.
-        return helloService.sayHello(Objects.requireNonNull(name));
+//        return helloService.sayHello(Objects.requireNonNull(name));
+
+        return helloService.sayHello(name);
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        System.out.println(applicationContext);
         this.applicationContext = applicationContext;
     }
 }

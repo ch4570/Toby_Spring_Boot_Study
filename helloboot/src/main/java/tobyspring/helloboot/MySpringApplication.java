@@ -8,6 +8,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 public class MySpringApplication {
 
     public static void run(Class<?> applicationClass, String... args) {
+
         // Spring Container는 applicationContext로 구현이 되어있는데, ApplicationContext는 구현체가 다양하다.
         // Template Method 패턴은 상속을 통해 기능을 확장해 나가는 패턴이다.
         // 대표적으로 ApplicationContext가 이 패턴을 사용중이다.
