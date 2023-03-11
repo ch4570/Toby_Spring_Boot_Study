@@ -1,7 +1,7 @@
 package tobyspring.config.autoconfig;
 
 
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Condition;
@@ -14,22 +14,22 @@ import tobyspring.config.MyAutoConfiguration;
 @MyAutoConfiguration
 
 // @Conditional 애너테이션을 사용해서 Bean을 등록할지 여부를 결정할 수 있다.
-// @Conditional은 Configuration 클래스와 Bean 메서드에 사용할 수 있다.
 // @Conditional 애너테이션에는 Condition 인터페이스를 구현한 클래스를 넣어주어야 한다.
-@Conditional(TomcatWebServerConfig.TomcatCondition.class)
-public class TomcatWebServerConfig {
+@Conditional(JettyWebServerConfigRefactor.JettyCondition.class)
+public class JettyWebServerConfigRefactor {
 
-
-    @Bean(name = "tomcatWebServerFactory")
+    // @Bean의 Element로 이름을 지정하지 않으면 메서드 이름이 Bean의 이름이된다.
+    @Bean(name = "jettyWebServerFactory")
     public ServletWebServerFactory servletWebServerFactory() {
-        return new TomcatServletWebServerFactory();
+        return new JettyServletWebServerFactory();
     }
 
-    static class TomcatCondition implements Condition {
+
+    static class  JettyCondition implements Condition {
 
         @Override
         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-            return ClassUtils.isPresent("org.apache.catalina.startup.Tomcat",
+            return ClassUtils.isPresent("org.eclipse.jetty.server.Server",
                     context.getClassLoader());
         }
     }
