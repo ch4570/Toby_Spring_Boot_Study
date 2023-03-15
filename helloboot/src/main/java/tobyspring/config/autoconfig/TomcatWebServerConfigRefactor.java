@@ -1,14 +1,10 @@
 package tobyspring.config.autoconfig;
 
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Condition;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.util.ClassUtils;
 import tobyspring.config.ConditionalMyOnClass;
 import tobyspring.config.MyAutoConfiguration;
 
@@ -18,8 +14,13 @@ public class TomcatWebServerConfigRefactor {
 
 
     @Bean(name = "tomcatWebServerFactory")
+
+    // 지금 등록하려는 Bean을 개발자가 등록한적이 있으면 등록되지 않도록한다.
+    @ConditionalOnMissingBean
     public ServletWebServerFactory servletWebServerFactory() {
         return new TomcatServletWebServerFactory();
     }
+
+
 
 }

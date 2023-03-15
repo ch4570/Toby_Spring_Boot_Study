@@ -1,6 +1,7 @@
 package tobyspring.config.autoconfig;
 
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
@@ -20,12 +21,14 @@ public class JettyWebServerConfigRefactor {
 
     // @Bean의 Element로 이름을 지정하지 않으면 메서드 이름이 Bean의 이름이된다.
     @Bean(name = "jettyWebServerFactory")
+    // 지금 등록하려는 Bean을 개발자가 등록한적이 있으면 등록되지 않도록한다.
+    @ConditionalOnMissingBean
     public ServletWebServerFactory servletWebServerFactory() {
         return new JettyServletWebServerFactory();
     }
 
 
-    static class  JettyCondition implements Condition {
+    static class JettyCondition implements Condition {
 
         @Override
         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
