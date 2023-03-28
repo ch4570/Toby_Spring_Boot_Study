@@ -20,7 +20,7 @@ public class HelloApiTest {
         // RestTemplate에 비해 테스트에 용이하다.
         TestRestTemplate restTemplate = new TestRestTemplate();
 
-        ResponseEntity<String> result = restTemplate.getForEntity("http://localhost:8080/hello?name={name}", String.class, "Spring");
+        ResponseEntity<String> result = restTemplate.getForEntity("http://localhost:9090/app/hello?name={name}", String.class, "Spring");
 
         // 응답 검증은 3가지로 진행
 
@@ -39,7 +39,7 @@ public class HelloApiTest {
     void failsHelloApi() {
         TestRestTemplate restTemplate = new TestRestTemplate();
 
-        ResponseEntity<String> result = restTemplate.getForEntity("http://localhost:8080/hello?name=", String.class);
+        ResponseEntity<String> result = restTemplate.getForEntity("http://localhost:9090/app/hello?name=", String.class);
 
         // status code 500 인지 검증
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
