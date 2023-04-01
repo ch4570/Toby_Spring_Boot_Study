@@ -2,7 +2,6 @@ package tobyspring.helloboot;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -26,12 +25,24 @@ public class HelloServiceTest {
     @FastUnitTest
     void SimpleHelloService() {
 
-        SimpleHelloService helloService = new SimpleHelloService();
+        SimpleHelloService helloService = new SimpleHelloService(helloRepositoryStub);
 
         String result = helloService.sayHello("Test");
 
         Assertions.assertThat(result).isEqualTo("Hello Test");
     }
+
+    private static HelloRepository helloRepositoryStub = new HelloRepository() {
+        @Override
+        public Hello findHello(String name) {
+            return null;
+        }
+
+        @Override
+        public void increaseCount(String name) {
+
+        }
+    };
 
     @UnitTest
     void helloDecoratorTest() {
@@ -41,4 +52,6 @@ public class HelloServiceTest {
 
         Assertions.assertThat(result).isEqualTo("*Test*");
     }
+
+
 }

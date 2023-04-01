@@ -36,6 +36,11 @@ public class HelloController implements ApplicationContextAware {
         return helloService.sayHello(name);
     }
 
+    @GetMapping("/count")
+    public String count(String name) {
+        return name + " : " + helloService.countOf(name);
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
