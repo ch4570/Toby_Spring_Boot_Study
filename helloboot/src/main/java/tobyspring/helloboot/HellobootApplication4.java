@@ -11,14 +11,13 @@ package tobyspring.helloboot;
 
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionEvaluationReport;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
-import tobyspring.config.MySpringBootApplication;
-
 import javax.annotation.PostConstruct;
 
-@MySpringBootApplication
+@SpringBootApplication
 public class HellobootApplication4 {
 
 	private final JdbcTemplate jdbcTemplate;
@@ -32,13 +31,25 @@ public class HellobootApplication4 {
 		jdbcTemplate.execute("create table if not exists hello(name varchar(50) primary key, count int)");
 	}
 
+
+	// 자동 등록된 구성 정보들이 어떤 것들이 있는지 콘솔에 찍는코드
 	@Bean
-	ApplicationRunner applicationRunner(Environment env) {
+	ApplicationRunner run(ConditionEvaluationReport report) {
 		return args -> {
-			String name = env.getProperty("my.name");
-			System.out.println("my.name = " + name);
+			System.out.println(report.getConditionAndOutcomesBySource().entrySet().stream()
+					.filter(co -> co.getValue().isFullMatch())
+					.filter(co -> co.getKey().indexOf("Jmx") < 0)
+					.map(co -> {
+						System.out.println(co.getKey());
+						co.getValue().forEach(c -> {
+							System.out.println("\t" + c.getOutcome());
+						});
+						System.out.println();
+						return co;
+					}).count());
 		};
 	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(HellobootApplication4.class, args);

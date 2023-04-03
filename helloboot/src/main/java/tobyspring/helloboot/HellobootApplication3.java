@@ -1,10 +1,13 @@
 package tobyspring.helloboot;
 
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -44,6 +47,14 @@ public class HellobootApplication3 {
 
 		applicationContext.register(HellobootApplication3.class);
 		applicationContext.refresh();
+	}
+
+		@Bean
+		ApplicationRunner applicationRunner(Environment env) {
+		return args -> {
+			String name = env.getProperty("my.name");
+			System.out.println("my.name = " + name);
+		};
 	}
 
 }
