@@ -38,7 +38,7 @@ public class HellobootApplication4 {
 		return args -> {
 			System.out.println(report.getConditionAndOutcomesBySource().entrySet().stream()
 					.filter(co -> co.getValue().isFullMatch())
-					.filter(co -> co.getKey().indexOf("Jmx") < 0)
+					.filter(co -> !co.getKey().contains("Jmx"))
 					.map(co -> {
 						System.out.println(co.getKey());
 						co.getValue().forEach(c -> {
